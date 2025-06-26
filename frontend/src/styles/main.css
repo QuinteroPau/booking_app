@@ -1,0 +1,1137 @@
+/* ============================================
+   GLOBAL VARIABLES & BASE STYLES
+   ============================================ */
+:root {
+  /* Main Restaurant Palette - Editable */
+  --primary-color: #2d3748;        /* Main color (buttons, headers) */
+  --primary-hover: #1a202c;        /* Primary hover state */
+  --secondary-color: #e53e3e;      /* Secondary color */
+  --secondary-hover: #c53030;      /* Secondary hover state */
+  --accent-color: #3182ce;         /* Links, focus states */
+  --success-color: #38a169;        /* Success messages */
+  --error-color: #e53e3e;          /* Error messages */
+
+  /* Interface Base */
+  --text-color: #2d3748;           /* Main text color */
+  --text-light: #718096;           /* Lighter text */
+  --bg-color: #fff;                /* Background color */
+  --bg-secondary: #f7fafc;         /* Secondary background */
+  --border-color: #e2e8f0;         /* Border color */
+
+  /* General Style */
+  --border-radius: 0.5rem;
+  --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+                Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-family);
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--bg-secondary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   MAIN LAYOUT COMPONENTS
+   ============================================ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* For absolutely positioned children */
+}
+
+/* App Background & Container */
+.app-background {
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Prevents cutting on scroll */
+  min-height: 100vh; 
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.app-container-wrapper {
+  transition: height 0.3s ease-in-out;
+  overflow: hidden;
+  width: 100%; /* or a fixed width if preferred */
+  max-width: 600px; /* adjust to your preferred maximum width */
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.app-container {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  padding: 30px;
+  position: relative;
+  
+}
+
+.app-main-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.app-main-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.app-main-exit {
+  opacity: 1;
+}
+
+.app-main-exit-active {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Header Components */
+.restaurante-logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  height: 200px;
+  width: 200px;
+  z-index: 10;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+.header-left {
+  position: absolute;
+  top: 20px;
+  left: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 10;
+  padding: 10px 16px;
+  border-radius: 12px;
+}
+
+.restaurant-info h2 {
+  margin: 0;
+  font-size: 2.4rem;
+  color: white;
+  text-shadow: 2px 2px 3px rgb(0, 0, 0);
+}
+
+.restaurant-info p {
+  margin: 0;
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0);
+}
+
+.app-header,
+.app-footer {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.app-header h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.app-header button {
+  margin: 0 5px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+
+/* ============================================
+   FORM ELEMENTS & BUTTONS
+   ============================================ */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  transition: border-color 0.2s;
+  background-color: var(--bg-color);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+}
+
+button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+button.secondary {
+  background-color: var(--secondary-color);
+}
+
+button.secondary:hover {
+  background-color: var(--secondary-hover);
+}
+
+/* ============================================
+   CARDS & CONTENT BLOCKS
+   ============================================ */
+.card {
+  background: var(--bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.fondo-editor {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+}
+
+.fondo-editor h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.fondo-editor input[type="file"] {
+  margin-top: 10px;
+}
+
+/* ============================================
+   CALENDAR & DATE COMPONENTS
+   ============================================ */
+.react-calendar {
+  border: none;
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.agenda-calendar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.agenda-day {
+  width: 80px;
+  text-align: center;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  transition: background 0.2s ease;
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+.agenda-day:hover {
+  background-color: #eee;
+}
+
+.agenda-day.selected {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+}
+
+.agenda-day-name {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.agenda-day-date {
+  text-align: center;
+  font-size: 1.2rem;
+  flex-direction: column;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.day-number {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.day-month {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.seleccionar-fecha {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.reserva-dot {
+  margin-top: 6px;
+  width: 90%;
+  height: 8px;
+  background-color: var(--primary-color);
+  border-radius: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cerrado-dot {
+  margin-top: 6px;
+  width: 90%;
+  height: 8px;
+  background-color: red !important;
+  border-radius: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.agenda-day.selected .reserva-dot {
+  background-color: white;
+}
+
+.agenda-add-button {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+}
+
+.agenda-add-button:hover {
+  background-color: var(--primary-hover);
+}
+
+.agenda-plus-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* ============================================
+   MODALS & OVERLAYS
+   ============================================ */
+.editor-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 1rem;
+}
+
+.editor-box {
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--box-shadow);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+
+.datepicker-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(2px);
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.datepicker-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  width: 500px;
+  max-width: 90vw;
+}
+
+/* ============================================
+   ADMIN PANEL COMPONENTS
+   ============================================ */
+.admin-panel {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+.edit{
+  margin-right: 10px;
+  margin-bottom: 20px;
+  background-color: var(--secondary-color);
+}
+.admin-buttons{
+  justify-content: center;
+  display:flex;
+}
+
+.admin-panel h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.reservas-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.reserva-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.reserva-item strong {
+  font-size: 1.1rem;
+  color: #222;
+}
+
+.reserva-item em {
+  display: block;
+  margin-top: 8px;
+  color: #666;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.text-center {
+  text-align: center;
+}
+
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mt-4 { margin-top: 1.5rem; }
+.mt-5 { margin-top: 2rem; }
+
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.mb-5 { margin-bottom: 2rem; }
+.success-message {
+  color: var(--success-color);
+  background-color: rgba(56, 161, 105, 0.1);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: var(--error-color);
+  background-color: rgba(229, 62, 62, 0.1);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+}
+
+.confirmation {
+  align-items: center;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN - MOBILE FIRST ENHANCEMENTS
+   ============================================ */
+
+
+@media (max-width: 1060px) {
+  .container {
+    padding: 1.5rem;
+  }
+  .app-container{
+    position: absolute;
+    width: 95%;
+    top: 140px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    overflow-y: auto;
+  }
+  .restaurante-logo {
+    height: 120px;
+    width: 120px;
+  }
+
+  .header-left {
+    left: 180px;
+  }
+
+  .restaurant-info h2 {
+    font-size: 2.2rem;
+  }
+
+  .restaurant-info p {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .restaurante-logo {
+    height: 120px;
+    width: 120px;
+    top: 15px;
+    left: 15px;
+  }
+
+  .header-left {
+    left: 140px;
+    top: 30px;
+  }
+
+  .restaurant-info h2 {
+    font-size: 1.8rem;
+  }
+
+  .restaurant-info p {
+    font-size: 1rem;
+  }
+
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .agenda-day {
+    width: 20%;
+    padding: 8px;
+  }
+
+  .day-number {
+    font-size: 1.3rem;
+  }
+
+  .datepicker-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .restaurante-logo {
+    height: 100px;
+    width: 100px;
+    top: 10px;
+    left: 10px;
+  }
+
+
+  .header-left {
+    left: 100px;
+    top: 20px;
+  }
+
+  .restaurant-info h2 {
+    font-size: 1.4rem;
+  }
+
+  .restaurant-info p {
+    font-size: 0.9rem;
+  }
+
+  .agenda-day {
+    width: 20%;
+    min-width: 60px;
+    padding: 6px;
+    flex: 0 0 calc(100% / 5 - 12px);
+  }
+
+  .day-number {
+    font-size: 1.1rem;
+  }
+
+  .day-month {
+    font-size: 0.7rem;
+  }
+
+  .editor-box {
+    padding: 1.5rem;
+  }
+}
+.react-calendar {
+  border: none;
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  margin-top: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+}
+.react-datepicker {
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  border: none;
+}
+.react-datepicker__month-container {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  width: 100%;
+  height: 100%;
+}
+.react-datepicker__day {
+  padding: 0.6rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.react-datepicker__day:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.react-datepicker__day--selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+.react-datepicker__header {
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: var(--primary-color);
+  color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.react-datepicker__current-month {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+}
+
+.react-datepicker__day-names,
+.react-datepicker__week {
+  display: flex;
+  justify-content: space-between;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day {
+  line-height: 2.5rem;
+  text-align: center;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  padding: 0;
+  margin: 0.2rem;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.react-datepicker__day--selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.react-datepicker__day:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+.react-datepicker__navigation {
+  top: 1.2rem;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.react-datepicker__navigation:hover {
+  background-color: var(--primary-hover);
+}
+
+.react-datepicker__navigation--previous {
+  left: 1rem;
+}
+
+.react-datepicker__navigation--next {
+  right: 1rem;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--selected:hover,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__day--keyboard-selected:hover {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+.react-datepicker__day--selected:hover,
+.react-datepicker__day--keyboard-selected:hover {
+  background-color: var(--primary-hover) !important;
+}
+
+.demo-toolbar {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: var(--box-shadow);
+}
+
+.demo-toolbar button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.demo-toolbar button:hover {
+  background-color: var(--primary-hover);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+/* People and Shift Selector Styles */
+.people-selector, .shift-selector {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.people-option, .shift-option {
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+  color:#1a202c;
+  font-weight: 500;
+  text-align: center;
+  
+}
+
+.people-option {
+  min-width: 60px;
+  
+}
+
+.shift-option {
+  min-width: 120px;
+  width: 40%;
+}
+
+.people-option:hover, .shift-option:hover {
+  background-color: #eee;
+}
+
+.people-option.selected, .shift-option.selected {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  font-weight: bold;
+  
+  color:#ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .people-option {
+    padding: 8px 10px;
+    min-width: 50px;
+    font-size: 0.9rem;
+  }
+  
+  .shift-option {
+    padding: 8px 10px;
+    min-width: 100px;
+    font-size: 0.9rem;
+  }
+}
+.people-counter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.people-counter input {
+  width: 70px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 6px;
+  border-radius: 8px;
+
+}
+.people-counter input::-webkit-outer-spin-button,
+.people-counter input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.people-counter button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  line-height: 1;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  padding: 0;
+}
+
+.people-counter button:hover {
+  background-color: var(--primary-hover);
+}
+.next-button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.time-slot{
+  margin: 5px;
+  background-color: white;
+  border-color: var(--primary-color);
+  color: #1a202c;
+}
+
+.time-slot{
+  margin: 5px;
+  background-color: white;
+  border-color: var(--primary-color);
+  color: #1a202c;
+}
+.time-slot-picker{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.button-group{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.button-group button{
+  margin: 5px;
+  background-color: var(--secondary-color);
+  height: 50px;
+}
+.time-slot-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.time-slot {
+  background-color: white;
+  color:#1a202c;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.time-slot:hover {
+  background-color: var(--primary-hover);
+  color: white;
+}
+
+.time-slot.selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+.step-title svg{
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+.step-title{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+.reservation-summary {
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  background-color: #fff;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.summary-title {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.summary-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.summary-items h3{
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.summary-item svg {
+  flex-shrink: 0;
+}
+
+@media (min-width: 600px) {
+  .summary-items {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+@media (max-width: 420px) {
+  .agenda-day {
+    min-width: 40px;
+    width: 40px;
+    padding: 6px 3px;
+  }
+  
+  .day-number {
+    font-size: 1rem;
+  }
+  
+  
+  /* Ensure the plus button stays visible */
+  .agenda-plus-wrapper {
+    padding-right: 5px;
+  }
+}
+@media (max-width: 320px) {
+  .agenda-calendar {
+    gap: 4px; /* Reduce gap further */
+  }
+
+  .agenda-day {
+    min-width: 45px; /* Even smaller */
+    padding: 4px 2px;
+  }
+
+  .day-number {
+    font-size: 0.9rem;
+  }
+
+  .day-month {
+    font-size: 0.6rem;
+  }
+
+  .agenda-add-button {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+}
+.items-reserva{
+  display: flex;
+  align-items: center;
+}
+.delete{
+  background-color: #c53030;
+}
+.delete:hover{
+  background-color: #812020;
+}
+.shift-option.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+button.primary.active {
+  background-color: var(--secondary-color);
+  color: white;
+  font-weight: bold;
+}
+
+.agenda-day.deshabilitado {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  text-align: center;
+  color: var(--primary-color);
+}
+
+.spinner {
+  border: 4px solid #eee;
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

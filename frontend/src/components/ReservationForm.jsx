@@ -144,47 +144,54 @@ const ReservationForm = ({ step, setStep, restaurante }) => {
     setAvailableTimes(horasArray)
   }
 
-  const calcularDisponibilidadTurnos = async () => {
-    const { data, error } = await supabase
-      .from('restaurantes')
-      .select('turnos')
-      .eq('slug', slug)
-      .single()
+const calcularDisponibilidadTurnos = async () => {
+  const { data, error } = await supabase
+    .from('restaurantes')
+    .select('turnos')
+    .eq('slug', slug)
+    .single()
 
-    if (error) {
-      console.error('Error al obtener turnos:', error)
-      return []
-    }
-
-    const diaNombre = diaAbreviado[new Date(tempDate).getDay()]
-    const turnosDelDia = data.turnos?.[diaNombre] || []
-
-    if (restaurante?.modo_aforo === 'basic') {
-      const { data: reservas, error: reservasError } = await supabase
-        .from('reservas')
-        .select('turno, guests')
-        .eq('date', formatDate(tempDate))
-
-      if (reservasError) {
-        console.error('Error al obtener reservas:', reservasError)
-        return turnosDelDia
-      }
-
-      const aforoActual = reservas.reduce((acc, r) => {
-        acc[r.turno] = (acc[r.turno] || 0) + r.guests
-        return acc
-      }, {})
-
-      return turnosDelDia.map(turno => {
-        const aforoMaximo = turno.aforo_maximo || 9999
-        const reservado = aforoActual[turno.nombre] || 0
-        const disponible = aforoMaximo - reservado
-        return { ...turno, disponible }
-      })
-    }
-
-    return turnosDelDia
+  if (error) {
+    console.error('Error al obtener turnos:', error)
+    return []
   }
+
+  const dateKey = formatDate(tempDate)
+  let turnosDelDia = data.turnos?.[dateKey]
+
+  // Si no hay turno específico, usa el día de la semana
+  if (!turnosDelDia) {
+    const diaNombre = diaAbreviado[new Date(tempDate).getDay()]
+    turnosDelDia = data.turnos?.[diaNombre] || []
+  }
+
+  if (restaurante?.modo_aforo === 'basic') {
+    const { data: reservas, error: reservasError } = await supabase
+      .from('reservas')
+      .select('turno, guests')
+      .eq('date', formatDate(tempDate))
+
+    if (reservasError) {
+      console.error('Error al obtener reservas:', reservasError)
+      return turnosDelDia
+    }
+
+    const aforoActual = reservas.reduce((acc, r) => {
+      acc[r.turno] = (acc[r.turno] || 0) + r.guests
+      return acc
+    }, {})
+
+    return turnosDelDia.map(turno => {
+      const aforoMaximo = turno.aforo_maximo || 9999
+      const reservado = aforoActual[turno.nombre] || 0
+      const disponible = aforoMaximo - reservado
+      return { ...turno, disponible }
+    })
+  }
+
+  return turnosDelDia
+}
+
 
   useEffect(() => {
     const cargarTurnos = async () => {
@@ -277,21 +284,33 @@ const ReservationForm = ({ step, setStep, restaurante }) => {
           <div className="form-group">
             <h3 className="step-title">Turno</h3>
             <div className="shift-selector" role="group">
-              {turnosDisponibles.map((turno, index) => {
-                const noDisponible = restaurante?.modo_aforo === 'basic' && turno.disponible < formik.values.guests
-                return (
-                  <button
-                    key={index}
-                    type="button"
-                    className={`shift-option ${formik.values.shift === turno.nombre ? 'selected' : ''} ${noDisponible ? 'disabled' : ''}`}
-                    disabled={noDisponible}
-                    onClick={() => handleTurnoSeleccionado(turno)}
-                  >
-                    {turno.nombre} {restaurante?.modo_aforo === 'basic'}
-                  </button>
-                )
-              })}
-            </div>
+  {turnosDisponibles.length === 0 ? (
+    <p style={{ color: 'red', fontWeight: 'bold', marginTop: '1rem' }}>
+      Restaurante cerrado
+    </p>
+  ) : (
+    turnosDisponibles.map((turno, index) => {
+      const noDisponible =
+        restaurante?.modo_aforo === 'basic' &&
+        turno.disponible < formik.values.guests;
+      return (
+        <button
+          key={index}
+          type="button"
+          className={`shift-option ${
+            formik.values.shift === turno.nombre ? 'selected' : ''
+          } ${noDisponible ? 'disabled' : ''}`}
+          disabled={noDisponible}
+          onClick={() => handleTurnoSeleccionado(turno)}
+        >
+          {turno.nombre}{' '}
+          {restaurante?.modo_aforo === 'basic'}
+        </button>
+      );
+    })
+  )}
+</div>
+
             {formik.touched.shift && formik.errors.shift && <div className="error">{formik.errors.shift}</div>}
           </div>
 

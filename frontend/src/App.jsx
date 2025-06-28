@@ -19,23 +19,29 @@ function App() {
   const [formStep, setFormStep] = useState(1) // Nuevo estado
 function obtenerSlugDesdeSubdominio() {
   const hostname = window.location.hostname
-
-  // Por ejemplo: pizzeriajuan.reserva.vercel.app
   const partes = hostname.split('.')
 
-  // Si estás en localhost, usa "ejemplo"
   if (hostname.includes('localhost') || hostname === '127.0.0.1') {
     return 'ejemplo'
   }
 
-  // Si el dominio tiene al menos 3 partes (subdominio.dominio.tld)
-  if (partes.length >= 3) {
-    return partes[0] // el subdominio
+  // Quitar 'www' si existe
+  if (partes[0] === 'www') {
+    partes.shift()
   }
 
-  // Fallback de seguridad
+  if (partes.length >= 3) {
+    return partes[0]
+  }
+
+  // Si solo es dominio + tld, devuelve el dominio
+  if (partes.length === 2) {
+    return partes[0]
+  }
+
   return 'ejemplo'
 }
+
 
   // Add this useEffect to track height changes from ReservationForm steps
   useEffect(() => {

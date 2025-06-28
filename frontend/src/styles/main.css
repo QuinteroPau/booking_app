@@ -701,10 +701,6 @@ button.secondary:hover {
   cursor: pointer;
 }
 
-.react-datepicker__day:hover {
-  background-color: var(--secondary-color);
-  color: white;
-}
 
 .react-datepicker__day--selected {
   background-color: var(--primary-color);
@@ -749,10 +745,6 @@ button.secondary:hover {
   color: white;
 }
 
-.react-datepicker__day:hover {
-  background-color: var(--secondary-color);
-  color: white;
-}
 .react-datepicker__navigation {
   top: 1.2rem;
   width: 2rem;
@@ -1134,4 +1126,35 @@ button.primary.active {
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+.react-datepicker__day.react-datepicker__day--disabled {
+  pointer-events: auto;
+}
+
+.react-datepicker__day.react-datepicker__day--disabled:hover {
+  background-color: rgba(255, 65, 65, 0.541) !important;
+  color: rgb(0, 0, 0) !important;
+  cursor: not-allowed;
+}
+
+
+.react-datepicker__day:hover {
+  background-color: var(--secondary-color) !important;
+  color:white;
+}
+
+.react-datepicker__current-month{
+  font-size: 25px !important;
+  color: var(--secondary-color) !important;
+  text-transform: uppercase;
+}
+
+.react-datepicker__navigation-icon{
+  color: var(--primary-color) !important;
+}
+
+.react-datepicker__day-name{
+  text-transform: uppercase;
+  cursor:text;
 }

@@ -38,7 +38,7 @@ const AdminPanel = () => {
     return `${year}-${month}-${day}`
   }
   const formattedDate = formatDateLocal(date)
-  const slug = window.location.hostname.split('.')[0] || 'ejemplo'
+  const slug = getSlug()
 
 
   const refrescarReservas = async () => {

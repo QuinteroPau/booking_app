@@ -11,6 +11,11 @@ export default function getSlug() {
     partes.shift()
   }
 
+  // Si el subdominio es 'reservas' → el slug es el siguiente fragmento
+  if (partes[0] === 'reservas' && partes.length >= 3) {
+    return partes[1]
+  }
+
   if (partes.length >= 3) {
     return partes[0]
   }

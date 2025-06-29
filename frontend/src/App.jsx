@@ -25,22 +25,26 @@ function obtenerSlugDesdeSubdominio() {
     return 'ejemplo'
   }
 
-  // Quitar 'www' si existe
   if (partes[0] === 'www') {
     partes.shift()
+  }
+
+  if (partes[0] === 'reservas' && partes.length >= 3) {
+    return partes[1]
   }
 
   if (partes.length >= 3) {
     return partes[0]
   }
 
-  // Si solo es dominio + tld, devuelve el dominio
   if (partes.length === 2) {
     return partes[0]
   }
 
   return 'ejemplo'
 }
+
+
 
 
   // Add this useEffect to track height changes from ReservationForm steps

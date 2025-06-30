@@ -242,7 +242,11 @@ const calcularDisponibilidadTurnos = async () => {
       </div><p>Hemos enviado los detalles a tu correo electrónico.</p><br/></div>
   }
 
-  const disableStep1Next = !formik.values.shift
+  const disableStep1Next =
+  !formik.values.shift ||
+  formik.values.guests < 1 ||
+  formik.values.guests > (restaurante?.max_reserva || 12);
+
   const disableStep2Next = !formik.values.time
   const disableStep3Next = !formik.values.email.trim() || !formik.values.phone.trim() || !formik.values.name.trim()
 

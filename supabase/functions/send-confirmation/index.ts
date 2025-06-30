@@ -58,11 +58,12 @@ Deno.serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: `${restaurantName} <onboarding@resend.dev>`,
-        to: email,
-        subject: `Confirmación de reserva en ${restaurantName}`,
-        html: htmlContent,
-      }),
+  from: `Reserva ${restaurantName} <reserva@pauquintero.com>`,
+  to: email,
+  subject: `Confirmación de reserva en ${restaurantName}`,
+  html: htmlContent,
+}),
+
     });
 
     if (!response.ok) {

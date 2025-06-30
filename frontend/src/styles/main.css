@@ -523,6 +523,8 @@ button.secondary:hover {
   padding: 1rem;
   border-radius: var(--border-radius);
   margin-bottom: 1rem;
+  
+  margin-top: 1rem;
 }
 
 .confirmation {
@@ -1157,4 +1159,8 @@ button.primary.active {
 .react-datepicker__day-name{
   text-transform: uppercase;
   cursor:text;
+}
+
+.react-datepicker__day--outside-month{
+  color: rgba(0, 0, 0, 0.164) !important;
 }

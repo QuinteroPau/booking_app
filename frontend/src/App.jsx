@@ -20,7 +20,7 @@ function obtenerSlugDesdeSubdominio() {
     partes.shift()
   }
 
-  if (partes[0] === 'admin' && partes.length >= 4) {
+  if (partes[0] === 'admin' && partes.length >= 3) {
     return partes[1]
   }
 

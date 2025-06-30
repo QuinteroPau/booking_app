@@ -20,6 +20,10 @@ function obtenerSlugDesdeSubdominio() {
     partes.shift()
   }
 
+  if (partes[0] === 'admin' && partes.length >= 4) {
+    return partes[1]
+  }
+
   if (partes[0] === 'reservas' && partes.length >= 3) {
     return partes[1]
   }
@@ -34,6 +38,7 @@ function obtenerSlugDesdeSubdominio() {
 
   return 'ejemplo'
 }
+
 
 function obtenerVistaDesdeSubdominio() {
   const hostname = window.location.hostname

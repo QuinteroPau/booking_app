@@ -6,18 +6,14 @@ export default function getSlug() {
     return 'ejemplo'
   }
 
-  // Remove www if present
   if (partes[0] === 'www') {
     partes.shift()
   }
 
-  // Si el subdominio es 'reservas' → el slug es el siguiente fragmento
-  if (partes[0] === 'reservas' && partes.length >= 3) {
-    return partes[1]
-  }
-
+  // Si hay al menos 3 partes (subdominio.dominio.tld)
   if (partes.length >= 3) {
-    return partes[0]
+    // devolver el dominio (segundo nivel)
+    return partes[partes.length - 2]
   }
 
   if (partes.length === 2) {

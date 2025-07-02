@@ -8,7 +8,6 @@ import EditorReserva from './EditorReserva'
 import ReservaItem from './ReservaItem'
 import HistorialReservas from './HistorialReservas'
 import getSlug from '../utils/getSlug'
-const slug = getSlug()
 import '../styles/main.css'
 
 const AdminPanel = () => {
@@ -39,14 +38,13 @@ const AdminPanel = () => {
   }
   const formattedDate = formatDateLocal(date)
   const slug = getSlug()
-
+  console.log('SLUG:', slug)
 
   const refrescarReservas = async () => {
     setLoading(true)
     const { data, error } = await supabase
       .from('reservas')
       .select('*')
-      .eq('date', formattedDate)
       .eq('slug', slug)
       .order('time', { ascending: true })
     if (!error) setReservas(data)

@@ -45,6 +45,7 @@ const AdminPanel = () => {
     const { data, error } = await supabase
       .from('reservas')
       .select('*')
+      .eq('date', formattedDate)
       .eq('slug', slug)
       .order('time', { ascending: true })
     if (!error) setReservas(data)

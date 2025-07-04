@@ -23,11 +23,28 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { email, name, date, time, guests, restaurantName, logo, primaryColor, secondaryColor, address, telefonoRestaurante, emailRestaurante } = await req.json();
-const [year, month, day] = date.split('-');
+    const {
+      email,
+      name,
+      date,
+      time,
+      guests,
+      restaurantName,
+      logo,
+      primaryColor,
+      secondaryColor,
+      address,
+      telefonoRestaurante,
+      emailRestaurante,
+      phone,
+      specialRequests
+    } = await req.json();
+
+    const [year, month, day] = date.split('-');
     const formattedDate = `${day}/${month}/${year}`;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
 
+    // HTML para el cliente
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
         <div style="background-color: ${primaryColor}; padding: 20px; text-align: center;">
@@ -43,7 +60,6 @@ const [year, month, day] = date.split('-');
           </ul>
           <p><strong style="color: ${secondaryColor};">Te esperamos en </strong> ${address}</p>
           <p><strong style="color: ${secondaryColor};">Si deseas cancelar o modificar tu reserva, llama al:</strong> ${telefonoRestaurante}</p>
-
         </div>
         <div style="background-color: #f5f5f5; text-align: center; padding: 10px; font-size: 12px; color: #888;">
           Este es un email automático. No respondas a este mensaje.
@@ -51,25 +67,41 @@ const [year, month, day] = date.split('-');
       </div>
     `;
 
-    const response = await fetch("https://api.resend.com/emails", {
+    // HTML exclusivo para el restaurante
+    const htmlContentRestaurante = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px;">
+        <h2 style="color: ${secondaryColor};">Nueva reserva en ${restaurantName}</h2>
+        <ul style="font-size: 16px; list-style: none; padding: 0;">
+          <li><strong>Nombre:</strong> ${name}</li>
+          <li><strong>Email:</strong> ${email}</li>
+          <li><strong>Teléfono:</strong> ${phone}</li>
+          <li><strong>Fecha:</strong> ${formattedDate}</li>
+          <li><strong>Hora:</strong> ${time}</li>
+          <li><strong>Personas:</strong> ${guests}</li>
+          <li><strong>Peticiones especiales:</strong> ${specialRequests || '-'}</li>
+        </ul>
+      </div>
+    `;
+
+    // ✅ Enviar email al cliente
+    const responseCliente = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${resendApiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-  from: `Reserva ${restaurantName} <reserva@seoceandigital.com>`,
-  to: [email, emailRestaurante].filter(Boolean), // ✅ envía al cliente y restaurante si está definido
-  subject: `Confirmación de reserva en ${restaurantName}`,
-  html: htmlContent,
-}),
-
+        from: `Reserva ${restaurantName} <reserva@seoceandigital.com>`,
+        to: email,
+        subject: `Confirmación de reserva en ${restaurantName}`,
+        html: htmlContent,
+      }),
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Error Resend:", errorText);
-      return new Response(JSON.stringify({ error: "Error enviando email" }), {
+    if (!responseCliente.ok) {
+      const errorText = await responseCliente.text();
+      console.error("Error Resend cliente:", errorText);
+      return new Response(JSON.stringify({ error: "Error enviando email al cliente" }), {
         status: 500,
         headers: {
           "Content-Type": "application/json",
@@ -78,9 +110,38 @@ const [year, month, day] = date.split('-');
       });
     }
 
-    const responseData = await response.json();
+    const responseDataCliente = await responseCliente.json();
 
-    return new Response(JSON.stringify({ success: true, data: responseData }), {
+    // ✅ Enviar email al restaurante, solo si existe
+    if (emailRestaurante) {
+      const responseRestaurante = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${resendApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: `Reserva ${restaurantName} <reserva@seoceandigital.com>`,
+          to: emailRestaurante,
+          subject: `Nueva reserva en ${restaurantName}`,
+          html: htmlContentRestaurante,
+        }),
+      });
+
+      if (!responseRestaurante.ok) {
+        const errorText = await responseRestaurante.text();
+        console.error("Error Resend restaurante:", errorText);
+        return new Response(JSON.stringify({ error: "Error enviando email al restaurante" }), {
+          status: 500,
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        });
+      }
+    }
+
+    return new Response(JSON.stringify({ success: true, data: responseDataCliente }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

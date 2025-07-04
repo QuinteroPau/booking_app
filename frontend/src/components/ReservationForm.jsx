@@ -71,6 +71,8 @@ const ReservationForm = ({ step, setStep, restaurante }) => {
           date: values.date,
           time: values.time,
           guests: values.guests,
+          phone: values.phone,                        // ✅ añadido
+          specialRequests: values.specialRequests,
           restaurantName: restaurante.nombre,
           logo: restaurante.logo_url,
           primaryColor: restaurante.color_primario,

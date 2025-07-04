@@ -23,8 +23,8 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { email, name, date, time, guests, restaurantName, logo, primaryColor, secondaryColor, address, telefonoRestaurante } = await req.json();
-    const [year, month, day] = date.split('-');
+    const { email, name, date, time, guests, restaurantName, logo, primaryColor, secondaryColor, address, telefonoRestaurante, emailRestaurante } = await req.json();
+const [year, month, day] = date.split('-');
     const formattedDate = `${day}/${month}/${year}`;
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
 
@@ -58,8 +58,8 @@ Deno.serve(async (req) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-  from: `Reserva ${restaurantName} <reserva@pauquintero.com>`,
-  to: email,
+  from: `Reserva ${restaurantName} <reserva@seoceandigital.com>`,
+  to: [email, emailRestaurante].filter(Boolean), // ✅ envía al cliente y restaurante si está definido
   subject: `Confirmación de reserva en ${restaurantName}`,
   html: htmlContent,
 }),

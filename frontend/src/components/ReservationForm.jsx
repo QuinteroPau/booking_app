@@ -76,7 +76,8 @@ const ReservationForm = ({ step, setStep, restaurante }) => {
           primaryColor: restaurante.color_primario,
           secondaryColor: restaurante.color_secundario,
           address: restaurante.direccion,
-          telefonoRestaurante: restaurante.telefono
+          telefonoRestaurante: restaurante.telefono,
+          emailRestaurante: restaurante.emailRestaurante
         }
       })
       if (error) console.error('Error enviando email:', error)

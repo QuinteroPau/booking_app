@@ -57,6 +57,15 @@ const EditorRestaurante = ({ visual, updateVisual, setVisual, setMostrarEditorRe
               onChange={(e) => updateVisual('telefono', e.target.value)}
             />
           </div>
+          {/* Teléfono */}
+          <div className="form-group" style={{ flex: '1 1 100%' }}>
+            <label>Email del Restaurante</label>
+            <input
+              type="text"
+              value={visual.emailRestaurante || ''}
+              onChange={(e) => updateVisual('emailRestaurante', e.target.value)}
+            />
+          </div>
 
           {/* Aforo máximo */}
           <div className="form-group" style={{ flex: '1 1 100%' }}>

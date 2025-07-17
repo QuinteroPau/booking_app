@@ -114,6 +114,7 @@ useEffect(() => {
       const { data, error } = await supabase
         .from('reservas')
         .select('date')
+        .eq('slug', slug)
         .gte('date', today.toISOString().split('T')[0])
         .lte('date', futureDate.toISOString().split('T')[0])
       if (!error && data) {

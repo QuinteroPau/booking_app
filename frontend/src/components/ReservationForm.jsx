@@ -8,7 +8,7 @@ import supabase from '../supabaseClient'
 import getSlug from '../utils/getSlug'
 const slug = getSlug()
 const diaAbreviado = {
-  0: 'Dóm',
+  0: 'Dom',
   1: 'Lun',
   2: 'Mar',
   3: 'Mié',

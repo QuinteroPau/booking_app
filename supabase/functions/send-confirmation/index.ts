@@ -69,7 +69,11 @@ Deno.serve(async (req) => {
 
     // HTML exclusivo para el restaurante
     const htmlContentRestaurante = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px;">
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+        <div style="background-color: ${primaryColor}; padding: 20px; text-align: center;">
+          <img src="${logo}" alt="${restaurantName}" style="max-height: 80px;" />
+        </div>
+        <div style="padding: 20px;">
         <h2 style="color: ${secondaryColor};">Nueva reserva en ${restaurantName}</h2>
         <ul style="font-size: 16px; list-style: none; padding: 0;">
           <li><strong>Nombre:</strong> ${name}</li>
@@ -80,6 +84,7 @@ Deno.serve(async (req) => {
           <li><strong>Personas:</strong> ${guests}</li>
           <li><strong>Peticiones especiales:</strong> ${specialRequests || '-'}</li>
         </ul>
+        </div>
       </div>
     `;
 

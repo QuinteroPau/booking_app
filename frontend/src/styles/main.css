@@ -685,7 +685,7 @@ button.secondary:hover {
   width: 100%;
   height: 100%;
   font-family: inherit;
-  border: none;
+  border: none !important;
 }
 .react-datepicker__month-container {
   background-color: #fff;
@@ -712,7 +712,8 @@ button.secondary:hover {
   padding: 1rem;
   font-size: 1.1rem;
   font-weight: bold;
-  background-color: var(--primary-color);
+  background-color: white !important;
+  border-bottom: 1px solid #aeaeae;
   color: white;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -729,23 +730,20 @@ button.secondary:hover {
   justify-content: space-between;
 }
 
-.react-datepicker__day-name,
-.react-datepicker__day {
-  line-height: 2.5rem;
+.react-datepicker__day,
+.react-datepicker__day-name {
   text-align: center;
   border-radius: 8px;
   font-size: 1.5rem;
-  padding: 0;
-  margin: 0.2rem;
+  padding: 5px;
   box-sizing: border-box;
   transition: background-color 0.2s ease;
   cursor: pointer;
+  width: 100px !important;
 }
 
-.react-datepicker__day--selected {
-  background-color: var(--primary-color);
-  color: white;
-}
+
+
 
 .react-datepicker__navigation {
   top: 1.2rem;

@@ -80,7 +80,8 @@ const ReservationForm = ({ step, setStep, restaurante }) => {
           address: restaurante.direccion,
           telefonoRestaurante: restaurante.telefono,
           emailRestaurante: restaurante.emailRestaurante,
-          slug: restaurante.slug
+          slug: restaurante.slug,
+          extraMail: restaurante.extraMail // ✅ AÑADIDO AQUÍ
         }
       })
       if (error) console.error('Error enviando email:', error)

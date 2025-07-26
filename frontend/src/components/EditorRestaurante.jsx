@@ -68,7 +68,7 @@ const EditorRestaurante = ({ visual, updateVisual, setVisual, setMostrarEditorRe
           </div>
           {/* Frase extra del mail */}
           <div className="form-group" style={{ flex: '1 1 100%' }}>
-            <label>Frase extra del mail</label>
+            <label>Frase extra e-mail de confirmación</label>
             <textarea
               rows={3}
               placeholder="Este texto se añadirá al final del correo al cliente..."

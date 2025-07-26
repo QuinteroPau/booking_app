@@ -187,7 +187,8 @@ useEffect(() => {
     telefono: visual.telefono,
     emailRestaurante: visual.emailRestaurante,
     turnos: visual.turnos,
-    max_reserva: visual.max_reserva
+    max_reserva: visual.max_reserva,
+    extraMail: visual.extraMail // 🔹 añadir aquí
   }).eq('slug', slug)
     if (!error) {
       alert('Cambios guardados')

@@ -66,7 +66,16 @@ const EditorRestaurante = ({ visual, updateVisual, setVisual, setMostrarEditorRe
               onChange={(e) => updateVisual('emailRestaurante', e.target.value)}
             />
           </div>
-
+          {/* Frase extra del mail */}
+          <div className="form-group" style={{ flex: '1 1 100%' }}>
+            <label>Frase extra del mail</label>
+            <textarea
+              rows={3}
+              placeholder="Este texto se añadirá al final del correo al cliente..."
+              value={visual.extraMail || ''}
+              onChange={(e) => updateVisual('extraMail', e.target.value)}
+            />
+          </div>
           {/* Aforo máximo */}
           <div className="form-group" style={{ flex: '1 1 100%' }}>
             <label>Máximo de personas por reserva</label>

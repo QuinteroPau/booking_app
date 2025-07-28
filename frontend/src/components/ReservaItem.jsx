@@ -6,7 +6,9 @@ const ReservaItem = ({ reserva, onEdit }) => {
       <div className="items-reserva" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <strong>{reserva.name}</strong> - {reserva.time} ({reserva.guests} personas)<br />
-          Email: {reserva.email} | Tel: {reserva.phone}
+          {reserva.email
+  ? <>Email: {reserva.email} | Tel: {reserva.phone}</>
+  : <>Tel: {reserva.phone}</>}
           {reserva.specialRequests && <em><br />Nota: {reserva.specialRequests}</em>}
         </div>
         <button

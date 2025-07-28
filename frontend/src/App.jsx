@@ -45,7 +45,7 @@ function obtenerVistaDesdeSubdominio() {
   const partes = hostname.split('.')
 
   if (hostname.includes('localhost') || hostname === '127.0.0.1') {
-    return 'reserva'
+    return 'admin'
   }
 
   if (partes[0] === 'www') {

@@ -7,6 +7,7 @@ import EditorRestaurante from './EditorRestaurante'
 import EditorReserva from './EditorReserva'
 import ReservaItem from './ReservaItem'
 import HistorialReservas from './HistorialReservas'
+import AñadirReservaModal from './AñadirReservaModal'
 import getSlug from '../utils/getSlug'
 import '../styles/main.css'
 
@@ -18,6 +19,7 @@ const AdminPanel = () => {
   const [diasCerrados, setDiasCerrados] = useState([])
   const [mostrarDatePicker, setMostrarDatePicker] = useState(false)
   const [mostrarEditorVisual, setMostrarEditorVisual] = useState(false)
+  const [mostrarModalNuevaReserva, setMostrarModalNuevaReserva] = useState(false)
   const [mostrarEditorRestaurante, setMostrarEditorRestaurante] = useState(false)
   const [mostrarHistorialReservas, setMostrarHistorialReservas] = useState(false)
   const [reservaEditando, setReservaEditando] = useState(null)
@@ -59,7 +61,7 @@ const AdminPanel = () => {
         .select('nombre, telefono, color_primario, color_primario_hover, color_secundario, color_secundario_hover, fondo_url, logo_url, turnos, direccion, modo_aforo, max_reserva, emailRestaurante, extraMail') 
         .eq('slug', slug)
         .single()
-      if (!error && data) setVisual(data)
+      if (!error && data) setVisual({ ...data, slug }) 
     }
     fetchConfiguracionVisual()
     console.log('SLUG:', slug)
@@ -264,6 +266,15 @@ useEffect(() => {
 
 
       <h3 style={{ marginTop: '10px' }}>{date.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h3>
+      <button style={{ marginBottom: '10px' }} onClick={() => setMostrarModalNuevaReserva(true)}>Añadir reserva</button>
+      {mostrarModalNuevaReserva && (
+  <AñadirReservaModal
+    onClose={() => setMostrarModalNuevaReserva(false)}
+    restaurante={visual}
+    refrescarReservas={refrescarReservas}
+    setMostrarModalNuevaReserva={setMostrarModalNuevaReserva}
+  />
+)}
 
       {loading ? (
         <p>Cargando reservas...</p>

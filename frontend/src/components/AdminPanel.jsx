@@ -264,9 +264,9 @@ useEffect(() => {
   modoVisual="admin"
 />
 
-
+<button style={{ marginBottom: '10px' }} onClick={() => setMostrarModalNuevaReserva(true)}>Añadir reserva</button>
       <h3 style={{ marginTop: '10px' }}>{date.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h3>
-      <button style={{ marginBottom: '10px' }} onClick={() => setMostrarModalNuevaReserva(true)}>Añadir reserva</button>
+      
       {mostrarModalNuevaReserva && (
   <AñadirReservaModal
     onClose={() => setMostrarModalNuevaReserva(false)}

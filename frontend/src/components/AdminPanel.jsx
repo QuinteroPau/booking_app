@@ -56,12 +56,15 @@ const AdminPanel = () => {
     const fetchConfiguracionVisual = async () => {
       const { data, error } = await supabase
         .from('restaurantes')
-        .select('nombre, telefono, color_primario, color_primario_hover, color_secundario, color_secundario_hover, fondo_url, logo_url, turnos, direccion, modo_aforo, max_reserva, emailRestaurante') 
+        .select('nombre, telefono, color_primario, color_primario_hover, color_secundario, color_secundario_hover, fondo_url, logo_url, turnos, direccion, modo_aforo, max_reserva, emailRestaurante, extraMail') 
         .eq('slug', slug)
         .single()
       if (!error && data) setVisual(data)
     }
     fetchConfiguracionVisual()
+    console.log('SLUG:', slug)
+    
+    
   }, [])
 
   useEffect(() => {

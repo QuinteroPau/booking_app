@@ -184,7 +184,7 @@ const EditorRestaurante = ({ visual, updateVisual, setVisual, setMostrarEditorRe
           </svg>
         </button>
       </div>
-      <label style={{}}>Aforo por turno:</label>
+      <p style={{}}>Aforo por turno:</p>
       {visual.modo_aforo === 'basic' && (
         <input
           type="number"
@@ -197,6 +197,275 @@ const EditorRestaurante = ({ visual, updateVisual, setVisual, setMostrarEditorRe
           }}
         />
       )}
+      {visual.modo_aforo === 'premium' && (
+  <div className="form-group" style={{ flex: '1 1 100%', marginTop: '1rem' }}>
+    <h4>Aforo por zonas (modo premium)</h4>
+
+    {Object.entries(visual.aforo_personalizado || {}).map(([zona, config], idx) => (
+      <div key={idx} style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '8px', marginBottom: '1rem' }}>
+        <h4 style={{ marginBottom: '0.5rem' }}>Zona: {zona}</h4>
+
+        <label>Tipo de configuración:</label>
+        <select
+          value={config.tipo}
+          onChange={(e) => {
+            const nuevoTipo = e.target.value
+            const nuevaConfig = nuevoTipo === 'mesas'
+              ? { tipo: 'mesas', mesas: [2] }
+              : { tipo: 'reglas', reglas: [], maxPersonas: null, maxMesas: null }
+            setVisual(prev => ({
+              ...prev,
+              aforo_personalizado: {
+                ...prev.aforo_personalizado,
+                [zona]: nuevaConfig
+              }
+            }))
+          }}
+        >
+          <option value="mesas">Lista de mesas</option>
+          <option value="reglas">Reglas por número de personas</option>
+        </select>
+
+        {config.tipo === 'mesas' && (
+          <>
+            <ul>
+              {config.mesas.map((capacidad, i) => (
+                <li key={i} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  <label style={{ minWidth: '70px' }}>Mesa {i + 1}:</label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={capacidad}
+                    onChange={(e) => {
+                      const nuevas = [...config.mesas]
+                      nuevas[i] = parseInt(e.target.value)
+                      setVisual(prev => ({
+                        ...prev,
+                        aforo_personalizado: {
+                          ...prev.aforo_personalizado,
+                          [zona]: { ...config, mesas: nuevas }
+                        }
+                      }))
+                    }}
+                  />
+                  <button type="button" onClick={() => {
+                    const nuevas = [...config.mesas]
+                    nuevas.splice(i, 1)
+                    setVisual(prev => ({
+                      ...prev,
+                      aforo_personalizado: {
+                        ...prev.aforo_personalizado,
+                        [zona]: { ...config, mesas: nuevas }
+                      }
+                    }))
+                  }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button type="button" onClick={() => {
+              setVisual(prev => ({
+                ...prev,
+                aforo_personalizado: {
+                  ...prev.aforo_personalizado,
+                  [zona]: {
+                    ...config,
+                    mesas: [...config.mesas, 2]
+                  }
+                }
+              }))
+            }}>Añadir mesa</button>
+          </>
+        )}
+
+        {config.tipo === 'reglas' && (
+          <>
+            <p><strong>Reglas:</strong></p><div style={{
+  display: 'grid',
+  gridTemplateColumns: '80px 100px 120px 1fr 40px',
+  gap: '10px',
+  fontWeight: 'bold',
+  marginBottom: '6px'
+}}>
+  <span>Personas</span>
+  <span>Mesas</span>
+  <span>Máx reservas</span>
+  <span>Días (ej: Vie,Sáb)</span>
+  <span></span> {/* espacio para botón eliminar */}
+</div>
+            {config.reglas.map((regla, i) => (
+              
+              <div key={i} style={{
+    display: 'grid',
+    gridTemplateColumns: '80px 100px 120px 1fr 40px',
+    gap: '10px',
+    marginBottom: '6px',
+    alignItems: 'center'
+  }}>
+                
+                <input
+                  type="number"
+                  placeholder="Personas"
+                  value={regla.personas}
+                  onChange={(e) => {
+                    const reglas = [...config.reglas]
+                    reglas[i].personas = parseInt(e.target.value)
+                    setVisual(prev => ({
+                      ...prev,
+                      aforo_personalizado: {
+                        ...prev.aforo_personalizado,
+                        [zona]: { ...config, reglas }
+                      }
+                    }))
+                  }}
+                />
+                <input
+                  type="text"
+                  placeholder="Mesas (número o 'llamar')"
+                  value={regla.mesas}
+                  onChange={(e) => {
+                    const reglas = [...config.reglas]
+                    reglas[i].mesas = isNaN(e.target.value) ? e.target.value : parseInt(e.target.value)
+                    setVisual(prev => ({
+                      ...prev,
+                      aforo_personalizado: {
+                        ...prev.aforo_personalizado,
+                        [zona]: { ...config, reglas }
+                      }
+                    }))
+                  }}
+                />
+                <input
+                  type="number"
+                  placeholder=""
+                  value={regla.max || ''}
+                  onChange={(e) => {
+                    const reglas = [...config.reglas]
+                    reglas[i].max = parseInt(e.target.value) || null
+                    setVisual(prev => ({
+                      ...prev,
+                      aforo_personalizado: {
+                        ...prev.aforo_personalizado,
+                        [zona]: { ...config, reglas }
+                      }
+                    }))
+                  }}
+                />
+                <input
+                  type="text"
+                  placeholder=""
+                  value={regla.dias || ''}
+                  onChange={(e) => {
+                    const reglas = [...config.reglas]
+                    reglas[i].dias = e.target.value
+                    setVisual(prev => ({
+                      ...prev,
+                      aforo_personalizado: {
+                        ...prev.aforo_personalizado,
+                        [zona]: { ...config, reglas }
+                      }
+                    }))
+                  }}
+                />
+                <button type="button" onClick={() => {
+                  const reglas = [...config.reglas]
+                  reglas.splice(i, 1)
+                  setVisual(prev => ({
+                    ...prev,
+                    aforo_personalizado: {
+                      ...prev.aforo_personalizado,
+                      [zona]: { ...config, reglas }
+                    }
+                  }))
+                }}><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg></button>
+              </div>
+            ))}
+            <button type="button" onClick={() => {
+              const nueva = { personas: 2, mesas: 1 }
+              setVisual(prev => ({
+                ...prev,
+                aforo_personalizado: {
+                  ...prev.aforo_personalizado,
+                  [zona]: { ...config, reglas: [...config.reglas, nueva] }
+                }
+              }))
+            }}>Añadir regla</button>
+
+            <div style={{ marginTop: '10px' }}>
+              <label>Máximo total de personas en la zona:</label>
+              <input
+                type="number"
+                value={config.maxPersonas || ''}
+                onChange={(e) => {
+                  const max = parseInt(e.target.value) || null
+                  setVisual(prev => ({
+                    ...prev,
+                    aforo_personalizado: {
+                      ...prev.aforo_personalizado,
+                      [zona]: { ...config, maxPersonas: max }
+                    }
+                  }))
+                }}
+              />
+              <label>Máximo total de mesas:</label>
+              <input
+                type="number"
+                value={config.maxMesas || ''}
+                onChange={(e) => {
+                  const max = parseInt(e.target.value) || null
+                  setVisual(prev => ({
+                    ...prev,
+                    aforo_personalizado: {
+                      ...prev.aforo_personalizado,
+                      [zona]: { ...config, maxMesas: max }
+                    }
+                  }))
+                }}
+              />
+            </div>
+          </>
+        )}
+
+        <button type="button" className="delete" style={{ marginTop: '1rem' }}
+          onClick={() => {
+            const actualizado = { ...visual.aforo_personalizado }
+            delete actualizado[zona]
+            setVisual(prev => ({
+              ...prev,
+              aforo_personalizado: actualizado
+            }))
+          }}>Eliminar zona</button>
+      </div>
+    ))}
+
+    <button
+      type="button"
+      onClick={() => {
+        const nuevaZona = prompt('Nombre de la nueva zona (ej: DENTRO, FUERA):')
+        if (nuevaZona) {
+          setVisual(prev => ({
+            ...prev,
+            aforo_personalizado: {
+              ...prev.aforo_personalizado,
+              [nuevaZona.toUpperCase()]: { tipo: 'mesas', mesas: [] }
+            }
+          }))
+        }
+      }}
+    >
+      Añadir Zona
+    </button>
+  </div>
+)}
+
+
 
       <hr style={{ margin: '10px 0', borderColor: '#ddd' }} />
     </div>

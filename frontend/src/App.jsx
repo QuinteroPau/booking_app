@@ -24,6 +24,10 @@ function obtenerSlugDesdeSubdominio() {
     return partes[1]
   }
 
+   if (partes[0] === 'booking' && partes.length >= 3) {
+    return partes[1]
+  }
+
   if (partes[0] === 'reservas' && partes.length >= 3) {
     return partes[1]
   }

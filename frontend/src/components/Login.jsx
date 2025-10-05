@@ -24,7 +24,7 @@ const Login = ({ onLogin }) => {
 
   return (
     <form onSubmit={handleLogin} className="login-form">
-      <h2>Login Administrador</h2>
+      <h2>Login Administradorr</h2>
       <input
         type="email"
         placeholder="Correo"
